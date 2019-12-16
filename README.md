@@ -90,7 +90,7 @@ $ make install
 ### 동적 라이브러리 링크
 * add_executable 실행파일 명이 `application.out`으로 가정
 * 로컬 x86_64에서 실행시 `target_link_libraries(application.out -L/usr/local/lib config)`
-* arm-linux 컴파일러를 사용하는 기기에서 해당 라이브러리를 동적으로 사용하기 위해서 로컬(/usr/local/arm-linux-libconfig/lib)에 있는 모든 파일을 해당 기기의 `/usr/lib`로 복사 / 붙여넣기
+* arm-linux 컴파일러를 사용하는 기기에서 해당 라이브러리를 동적으로 사용하기 위해서 로컬(/usr/local/arm-linux-libconfig/lib)에 있는 모든 파일을 해당 기기의 `/usr/lib`로 복사-붙여넣기
 * arm-linux에서 실행시 `target_link_libraries(application.out -L/usr/local/arm-linux-libconfig/lib config)`
 
 ### [주의!]정적 라이브러리 링크 
