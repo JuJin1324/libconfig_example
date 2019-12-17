@@ -98,3 +98,7 @@ $ make install
 * add_executable 실행파일 명이 `application.out`으로 가정
 * arm-linux용 정적 라이브러리인 `libconfig.a`가 `/usr/local/arm-linux-liblog4c/lib` 아래 있다고 가정
 * `target_link_libraries(application.out /usr/local/arm-linux-liblog4c/lib/libconfig.a)`
+
+### 크로스 컴파일 선택
+* 다음의 셋팅을 주석 처리 혹은 주석 풀기를 통해서 arm-linux 로 컴파일 할지 x86_64 로 컴파일할지 선택 
+    - `set(ARM_LINUX_COMPILE ON)`
