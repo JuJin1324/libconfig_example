@@ -15,6 +15,7 @@
     - 위에서 다운로드 받은 파일이 `~/Downloads` 에 있다고 가정
 ```bash
 $ cd ~/Downloads
+$ wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz
 $ tar -xvf libconfig-1.7.2.tar.gz
 $ cd libconfig-1.7.2
 ```
@@ -22,9 +23,9 @@ $ cd libconfig-1.7.2
   - 라이브러리 생성할 위치 : `/usr/local`
 ```bash
 $ ./configure 
-$ make clean
+$ sudo make clean
 $ make
-$ make install
+$ sudo make install
 ```
 * arm-linux 전용 libconfig 라이브러리 생성 명령어 
  - 라이브러리 생성할 위치 : `/usr/local/arm-linux-libconfig`
@@ -34,7 +35,7 @@ $ mkdir /usr/local/arm-linux-libconfig
 $ CC=arm-unknown-linux-gnueabi-gcc LD=arm-unknown-linux-gnueabi-ld CXX=arm-unknown-linux-gnueabi-c++ NM=arm-unknown-linux-gnueabi-nm OBJDUMP=arm-unknown-linux-gnueabi-objdump RANLIB=arm-unknown-linux-gnueabi-ranlib AR=arm-unknown-linux-gnueabi-ar ./configure --build=x86_64-apple-darwin`uname -r` --host=arm-linux --prefix=/usr/local/arm-linux-libconfig 
 
 ### 설치
-$ make clean
+$ sudo make clean
 $ make
 $ sudo make install
 ```
@@ -69,9 +70,9 @@ $ cd libconfig-1.7.2
 ```bash
 ### --prefix : 라이브러리 생성 디렉터리 셋팅
 $ ./configure --prefix=/usr
-$ make clean
+$ sudo make clean
 $ make
-$ make install
+$ sudo make install
 ```
 
 * arm-linux 전용 libconfig 라이브러리 생성 명령어 
@@ -81,9 +82,9 @@ armv7용 라이브러리를 설치할 디렉터리 생성 : $ mkdir /usr/arm-lin
 ### 라이브러리 생성관련 셋팅 
 $ CC=arm-linux-gnueabi-gcc CXX=arm-linux-gnueabi-c++ ./configure --build=x86_64-linux-gnu --host=arm-linux --prefix=/usr/arm-linux-libconfig
 
-$ make clean
+$ sudo make clean
 $ make
-$ make install
+$ sudo make install
 ```
 
 ## CMake
