@@ -8,11 +8,9 @@
     - [오픈소스SW 라이선스 LGPL 바로알기](https://openbee.kr/422)
 
 ## libconfig 설치
-* [libconfig-1.7.2.tar.gz 다운로드](https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz)
-
 ### macOS
-* 다운로드 후 압축 풀기 및 디렉터리 이동
-    - 위에서 다운로드 받은 파일이 `~/Downloads` 에 있다고 가정
+* 다운 받을 디렉터리 : ~/Downloads
+* 다운로드 : wget
 ```bash
 $ cd ~/Downloads
 $ wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz
@@ -56,9 +54,8 @@ $ sudo make install
   - without-expat : 모름 / 예시) `--without-expat`
 
 ### Ubuntu(Linux)
-* 다운로드 후 압축 풀기 및 디렉터리 이동
-    - wget을 통한 다운로드
-    - /home 디렉터리 아래에서 진행
+* 다운 받을 디렉터리 : /home
+* 다운로드 : wget
 ```bash
 $ cd /home
 $ wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz

@@ -50,5 +50,5 @@ endmacro()
 
 #print_all_variables()
 
-add_executable(libconfig_example main.c)
+add_executable(libconfig_example src/main.c)
 target_link_libraries(libconfig_example -L${CONFIG_LIB_DIR}/lib config)
