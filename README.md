@@ -73,6 +73,7 @@ ARM-Linux 컴파일용 라이브러리를 설치하기 위해서는 ARM-Linux �
 * --prefix : 산출물을 담을 디렉터리 경로(여기서는 ~/Documents/dev/external/ARM-Linux 아래 설치)
 ```bash
 $ wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz
+$ tar -xvf libconfig-1.7.2.tar.gz
 $ cd libconfig-1.7.2
 $ ./autogen.sh
 ```
