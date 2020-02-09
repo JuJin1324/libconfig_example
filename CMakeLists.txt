@@ -38,7 +38,7 @@ set(EXTERNAL_LIB_DIR ${EXTERNAL_LIB_ROOT}/lib)
 
 macro(set_external_library_static)
     find_library(
-            SERIALPORT
+            LIBCONFIG
             NAMES libconfig.a
             PATHS ${EXTERNAL_LIB_DIR}
             REQUIRED)
@@ -46,7 +46,7 @@ endmacro()
 
 macro(set_external_library_dynamic)
     find_library(
-            SERIALPORT
+            LIBCONFIG
             NAMES config
             PATHS ${EXTERNAL_LIB_DIR}
             REQUIRED)
@@ -54,7 +54,7 @@ endmacro()
 
 macro(set_external_library_dynamic_arm_linux)
     find_library(
-            SERIALPORT
+            LIBCONFIG
             NAMES config
             PATHS ${CMAKE_SOURCE_DIR}/external/ARM-Linux/lib
             REQUIRED)
@@ -69,7 +69,7 @@ if (APPLE)
 elseif (WIN32)
     ### Microsoft Windows
     message("BUILD HOST OS : ${CMAKE_HOST_SYSTEM_NAME}")
-    set_external_library_static()
+    set_external_library_dynamic()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fexec-charset=CP949")         # 윈도우에서 CLion을 통해 생성한 .exe 파일 실행 시 한글 깨짐 현상 방지
 else ()
     ### Linux

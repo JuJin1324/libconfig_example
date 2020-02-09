@@ -14,15 +14,15 @@ C언어 외부 파일 (.cfg)에서 key, value 를 읽어 config_t 구조체 변�
 ## 설치 : Microsoft Windows
 <b>MSYS2 / MinGW 사용</b>   
 
-* MSYS2/MinGW를 사용하여 CLion 환경 구축하기 : [참조 사이트](https://github.com/JuJin1324/CLion_stater#microsoft-windows)
 * 라이브러리 설치를 위한 패키지 설치 : `pacman -S isl autoconf automake-wrapper libtool make`
-* 라이브러리 생성 소스 다운로드를 위한 git 설치 : `pacman -S git`
+* MSYS2/MinGW를 사용하여 CLion 환경 구축하기 : [참조 사이트](https://github.com/JuJin1324/CLion_stater#microsoft-windows)
 
 ### 라이브러리 생성
 * --host : 산출될 라이브러리가 구동될 툴체인의 prefix(gcc 앞에 붙는 prefix)
 * --prefix : 산출물을 담을 디렉터리 경로(사용자 지정)
 ```bash
 $ wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz
+$ tar -xvf libconfig-1.7.2.tar.gz
 $ cd libconfig-1.7.2
 $ ./configure --host=x86_64-w64-mingw32 --prefix=$HOME/Documents/dev/external
 $ make clean
@@ -49,7 +49,6 @@ $ sudo make install
 ```bash
 $ wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz
 $ cd libconfig-1.7.2
-$ ./autogen.sh
 ```
 macOS에서 생성하는 경우 : `CC=arm-unknown-linux-gnueabi-gcc CXX=arm-unknown-linux-gnueabi-c++ ./configure --host=arm-unknown-linux-gnueabi --prefix=$HOME/Documents/dev/external/ARM-Linux`
 
@@ -119,6 +118,8 @@ external/ARM-Linux/lib 아래 3개의 파일(<b>libconfig.so, libconfig.so.11, l
 <b>[주의!] libconfig 정적 라이브러리로 사용하여 개발된 상용 프로그램 배포시 소스코드 공개가 의무화됨으로 소스코드 공개가 꺼려지면 
 동적 라이브러리 링크 사용을 추천</b>   
 
+<b>[주의!] Windows에서 libconfig 정적 라이브러리 사용 불가능!</b>
+
 add_executable 실행파일명 예시 : `application`   
 * ${CMAKE_SOURCE_DIR} : 현재 프로젝트 디렉터리
 * ${CMAKE_HOST_SYSTEM_NAME} : 현재 CMake가 동작하는 운영체제 명(예시 : Darwin, Linux, Windows), (Darwin = macOS)
@@ -141,6 +142,6 @@ find_library(
 target_link_libraries(application ${LIBCONFIG})
 ```
 
-### 크로스 컴파일 선택
-* 다음의 셋팅을 주석 처리 혹은 주석 풀기를 통해서 arm-linux 로 컴파일 할지 x86_64 로 컴파일할지 선택 
-    - `set(ARM_LINUX_COMPILE ON)`
+## 라이브러리 변경 시 주의 사항
+CMakeLists.txt 파일에서 라이브러리 관련 변경 후 상단 메뉴바 Tools -> CMake -> <b>Reset Cache and Reload Project</b> 
+및 Build -> Build Project 를 통한 재빌드 실행
