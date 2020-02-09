@@ -36,6 +36,7 @@ $ make install
 * --prefix : 산출물을 담을 디렉터리 경로(사용자 지정)
 ```bash
 $ wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz
+$ tar -xvf libconfig-1.7.2.tar.gz
 $ cd libconfig-1.7.2
 $ ./configure --prefix=$HOME/Documents/dev/external
 $ make clean
@@ -48,6 +49,7 @@ $ sudo make install
 * --prefix : 산출물을 담을 디렉터리 경로(여기서는 ~/Documents/dev/external/ARM-Linux 아래 설치)
 ```bash
 $ wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz
+$ tar -xvf libconfig-1.7.2.tar.gz
 $ cd libconfig-1.7.2
 ```
 macOS에서 생성하는 경우 : `CC=arm-unknown-linux-gnueabi-gcc CXX=arm-unknown-linux-gnueabi-c++ ./configure --host=arm-unknown-linux-gnueabi --prefix=$HOME/Documents/dev/external/ARM-Linux`
