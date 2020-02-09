@@ -4,24 +4,16 @@ project(libconfig_example C)
 set(CMAKE_C_STANDARD 99)
 
 ################### 사용자 지정 ####################
-### ARM_LINUX 전용 컴파일 옵션
-#set(ARM_LINUX_COMPILE ON)
+## Build 하여 산출된 응용프로그램이 실행될 운영체제 선택
+## 주석 시 Host OS / 주석 해제 시 ARM-Linux
+#set(BUILD_FOR_ARM_LINUX ON)
 
-#################################################
 #################### Macro ######################
-### external 디렉터리 아래 OS이름으로 된 디렉터리 명에 따라서 해당 OS에서 사용할 라이브러리를 선택하는 매크로
-macro(set_external_library os_name)
-    set(EXTERNAL_LIB_OS_DIR external/${os_name})
-    set(EXTERNAL_LIB_ROOT ${CMAKE_SOURCE_DIR}/external/${os_name})
-    set(EXTERNAL_LIB_DLL ${EXTERNAL_LIB_ROOT}/bin)
-    set(EXTERNAL_INCLUDE_DIR ${EXTERNAL_LIB_ROOT}/include)
-    set(EXTERNAL_LIB_DIR ${EXTERNAL_LIB_ROOT}/lib)
-
-    include_directories(${EXTERNAL_INCLUDE_DIR})
-endmacro()
-
-macro(arm_linux_options_for_macOS)
-    set(ARM_LINUX_TOOLCHAIN_DIR /usr/local/arm-unknown-linux-gnueabi)
+## ARM-Linux 툴체인 셋팅
+## @Param
+## ARM_LINUX_TOOLCHAIN_DIR : 툴체인 위치, 예시) /usr/local/arm-linux-gnueabi
+macro(set_arm_linux_toolchain ARM_LINUX_TOOLCHAIN_DIR)
+    ## arm-linux Cross Compile Options for macOS(Ubuntu dosen't need below options)
     set(CMAKE_C_COMPILER ${ARM_LINUX_TOOLCHAIN_DIR}/bin/arm-unknown-linux-gnueabi-gcc)
     set(CMAKE_LINKER ${ARM_LINUX_TOOLCHAIN_DIR}/bin/arm-unknown-linux-gnueabi-ld)
     set(CMAKE_NM ${ARM_LINUX_TOOLCHAIN_DIR}/bin/arm-unknown-linux-gnueabi-nm)
@@ -30,49 +22,78 @@ macro(arm_linux_options_for_macOS)
     set(CMAKE_RANLIB ${ARM_LINUX_TOOLCHAIN_DIR}/bin/arm-unknown-linux-gnueabi-ranlib)
     include_directories(${ARM_LINUX_TOOLCHAIN_DIR}/arm-unknown-linux-gnueabi/sysroot/usr/include)
 
-    ## Darwin : warning: cannot find entry symbol arch_paths_first; 에러 대처
-    set(HAVE_FLAG_SEARCH_PATHS_FIRST 0)
-    set(CMAKE_C_LINK_FLAGS "")
-    set(CMAKE_CXX_LINK_FLAGS "")
+    if (APPLE)
+        ## macOS - warning: cannot find entry symbol arch_paths_first; 에러 대처
+        set(HAVE_FLAG_SEARCH_PATHS_FIRST 0)
+        set(CMAKE_C_LINK_FLAGS "")
+        set(CMAKE_CXX_LINK_FLAGS "")
+    endif ()
 endmacro()
 
-### CMake의 예약변수들에 대한 내용을 모두 출력하도록 하는 매크로
-macro(print_all_variables)
-    message(STATUS "print_all_variables------------------------------------------{")
-    get_cmake_property(_variableNames VARIABLES)
-    foreach (_variableName ${_variableNames})
-        message(STATUS "${_variableName}=${${_variableName}}")
-    endforeach ()
-    message(STATUS "print_all_variables------------------------------------------}")
+### external 디렉터리 아래 CMake가 자동 인식하는 OS 이름으로 된 디렉터리 명에 따라서
+### 해당 OS 에서 사용할 라이브러리를 선택해주는 매크로
+set(EXTERNAL_LIB_ROOT ${CMAKE_SOURCE_DIR}/external/${CMAKE_HOST_SYSTEM_NAME})
+set(EXTERNAL_INCLUDE_DIR ${EXTERNAL_LIB_ROOT}/include)
+set(EXTERNAL_LIB_DIR ${EXTERNAL_LIB_ROOT}/lib)
+
+macro(set_external_library_static)
+    find_library(
+            SERIALPORT
+            NAMES libconfig.a
+            PATHS ${EXTERNAL_LIB_DIR}
+            REQUIRED)
 endmacro()
-#print_all_variables()
+
+macro(set_external_library_dynamic)
+    find_library(
+            SERIALPORT
+            NAMES config
+            PATHS ${EXTERNAL_LIB_DIR}
+            REQUIRED)
+endmacro()
+
+macro(set_external_library_dynamic_arm_linux)
+    find_library(
+            SERIALPORT
+            NAMES config
+            PATHS ${CMAKE_SOURCE_DIR}/external/ARM-Linux/lib
+            REQUIRED)
+endmacro()
 
 ##########################################
-## 운영체제에 따른 빌드 옵션 설정
-if (${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
+## CLion이 구동되는 운영체제에 따른 셋팅
+if (APPLE)
     ### Darwin
-    message("BUILD OS : macOS(${CMAKE_HOST_SYSTEM_NAME})")
-
-elseif (${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux")
-    ### X86_64 Linux
-    message("BUILD OS : ${CMAKE_HOST_SYSTEM_NAME}")
-elseif (${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
+    message("BUILD HOST OS : ${CMAKE_HOST_SYSTEM_NAME}(macOS)")
+    set_external_library_dynamic()
+elseif (WIN32)
     ### Microsoft Windows
-    message("BUILD OS : ${CMAKE_HOST_SYSTEM_NAME}")
+    message("BUILD HOST OS : ${CMAKE_HOST_SYSTEM_NAME}")
+    set_external_library_static()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fexec-charset=CP949")         # 윈도우에서 CLion을 통해 생성한 .exe 파일 실행 시 한글 깨짐 현상 방지
-endif ()
-
-if (${ARM_LINUX_COMPILE})
-    ### ARM-LINUX(텔라딘)
-    message("TARGET OS : ARM-LINUX")
-    arm_linux_options_for_macOS()
-    set_external_library(ARM-Linux)
 else ()
-    ### Local OS 컴파일
-    message("TARGET OS : LOCAL")
-    set_external_library(${CMAKE_HOST_SYSTEM_NAME})
+    ### Linux
+    message("BUILD HOST OS : ${CMAKE_HOST_SYSTEM_NAME}")
+    set_external_library_dynamic()
 endif ()
 
-### Make Application
+##########################################
+## Build 하여 산출된 응용프로그램이 실행될 운영체제에 따른 셋팅 : ARM-Linux / Host OS 중 택
+if (${BUILD_FOR_ARM_LINUX})
+    message("BUILD TARGET OS : ARM-LINUX")
+    set_arm_linux_toolchain(/usr/local/arm-unknown-linux-gnueabi)
+    set_external_library_dynamic_arm_linux()
+
+else () # Host OS
+    message("BUILD TARGET OS : ${CMAKE_HOST_SYSTEM_NAME}")
+endif ()
+
+##########################################
+## Application Build 셋팅
+include_directories(
+        ${EXTERNAL_INCLUDE_DIR}
+        src
+)
+
 add_executable(libconfig_example src/main.c)
-target_link_libraries(libconfig_example -L${EXTERNAL_LIB_DIR} config)
+target_link_libraries(libconfig_example ${LIBCONFIG})

@@ -24,11 +24,11 @@ int main() {
     config_init(&config);
 
     /* Read the file. If there is an error, report it and exit. */
-    if (! config_read_file(&config, file_path)) {
+    if (!config_read_file(&config, file_path)) {
         fprintf(stderr, "%s:%d - %s\n", config_error_file(&config),
                 config_error_line(&config), config_error_text(&config));
         config_destroy(&config);
-        return(EXIT_FAILURE);
+        return (EXIT_FAILURE);
     }
 
     /* Get the store name. */
@@ -58,11 +58,10 @@ int main() {
     config_setting_set_int(setting, 100);
 
     /* Write out the updated configuration. */
-    if(! config_write_file(&config, file_path))
-    {
+    if (!config_write_file(&config, file_path)) {
         fprintf(stderr, "Error while writing file.\n");
         config_destroy(&config);
-        return(EXIT_FAILURE);
+        return (EXIT_FAILURE);
     }
     printf("Updated configuration successfully written to: %s\n", file_path);
 
