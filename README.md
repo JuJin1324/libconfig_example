@@ -85,8 +85,7 @@ include_directories(${EXTERNAL_INCLUDE_DIR})
 find_library(
             LIBCONFIG
             NAMES config
-            PATHS ${EXTERNAL_LIB_DIR}
-            REQUIRED)
+            PATHS ${EXTERNAL_LIB_DIR} NO_DEFAULT_PATH REQUIRED)
 
 ## target_link_libraries()는 add_executable() 아래에 위치 시킨다.
 target_link_libraries(application ${LIBCONFIG})
