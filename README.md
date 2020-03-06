@@ -45,26 +45,6 @@ $ sudo make install
 ```
 
 ## 실행 환경(Target OS)이 arm-linux인 라이브러리 생성
-### 라이브러리 생성 
-* --prefix : 산출물을 담을 디렉터리 경로(여기서는 ~/Documents/dev/external/ARM-Linux 아래 설치)
-```bash
-$ wget https://hyperrealm.github.io/libconfig/dist/libconfig-1.7.2.tar.gz
-$ tar -xvf libconfig-1.7.2.tar.gz
-$ cd libconfig-1.7.2
-```
-macOS에서 생성하는 경우 : `CC=arm-unknown-linux-gnueabi-gcc CXX=arm-unknown-linux-gnueabi-c++ ./configure --host=arm-unknown-linux-gnueabi --prefix=$HOME/Documents/dev/external/ARM-Linux`
-
-Ubuntu에서 생성하는 경우 : `CC=arm-linux-gnueabi-gcc CXX=arm-linux-gnueabi-c++ ./configure --host=arm-linux --prefix=$HOME/Documents/dev/external/ARM-Linux`
-
-Windows(MinGW)에서 생성하는 경우 : `CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-c++ ./configure --host=arm-linux-gnueabihf --prefix=$HOME/Documents/dev/external/ARM-Linux`
-
-```bash
-$ make clean
-$ sudo make
-$ sudo make install
-```
-
-## 실행 환경(Target OS)이 arm-linux인 라이브러리 생성
 ARM-Linux 컴파일용 라이브러리를 설치하기 위해서는 ARM-Linux 전용 GCC가 필요하다. 
 해당 파일의 설치 및 CMake 선언에 관해서는 [참조사이트](https://github.com/JuJin1324/cmake-starter#arm-linux-toolchain-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0--macos)
 에서 OS에 맞는 <b>ARM-Linux Toolchain 사용하기</b>를 통해서 따라하기
